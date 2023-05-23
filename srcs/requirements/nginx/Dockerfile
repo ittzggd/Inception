@@ -1,5 +1,8 @@
 FROM	debian:buster
 
+
+#apt-get update: 설치되어있는 패키지들의 새로운 버전 있는지 확인
+#apt-get upgrade: 위에서 확인한 패키지들의 최신 버전에 따라 패키지들의 버전을 업드레이드해줌
 RUN		apt-get update -y &&
 		apt-get upgrade -y &&\
 		apt-get -y install nginx \
