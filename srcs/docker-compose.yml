@@ -16,8 +16,8 @@ services:
         - user_pw=${DB_USER_PW}
     # docker-complse.yml 파일로 docker container 만드는 경우 해당 컨테이너 이름 설정 가능
     container_name: mariadb
-    # volumes:
-    #   - db_volume:/var/lib/mysql
+    volumes:
+      - db_volume:/var/lib/mysql
     # 컨테이너 다운시에 재 시작하게 만들어주는 명ㄹ여어
    # restart: always
     #연결할 외부 디렉토리: 컨테이너 내 디렉토리
@@ -47,8 +47,8 @@ services:
         - USER_PW=${DB_USER_PW} 
         - HOST=${DB_HOST}
     #restart: always
-    # volums:
-    #   - wp_volume:/var/www/html
+    volumes:
+      - wp_volume:/var/www/html
     #컨테이너가 실행되는 순서 제어 가능 -> depends_on으로 지정해둕 컨테이너가 실행되고 그 뒤에 해당 컨테이너가 실행되어 \
     # wordpress 컨테이너가 db 컨테이너로 접속을 시도하도록 컨테이너 실행 순서를 제어함  -> 근데 실행 순서만 제어 
     working_dir: /var/www/html
@@ -68,6 +68,8 @@ services:
     container_name: nginx
     networks:
       - network_hejang
+    volumes:
+      - wp_volume:/var/www/html
    # restart: always
     # environment: 
     #   -
@@ -91,14 +93,13 @@ volumes:
     driver_opts: 
       o: bind
       type: none
-      device: $HOME/data/wordpress
-
+      device: /Users/katherinejang/P/42/cursus/inception_ref/srcs/requriements/wordpress
   db_volume:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: $HOME/data/database
+      device: /Users/katherinejang/P/42/cursus/inception_ref/srcs/requriements/mariadb
 
 networks:
   network_hejang:

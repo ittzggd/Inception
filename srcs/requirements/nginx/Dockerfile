@@ -20,9 +20,9 @@ RUN		mv localhost.dev.crt /etc/ssl/certs/
 RUN		mv localhost.dev.key /etc/ssl/private/
 RUN		chmod 700 /etc/ssl/certs/localhost.dev.crt /etc/ssl/private/localhost.dev.key
 
-RUN		chmod 777 /var/www/html
+#RUN		chmod 777 /var/www/html
 
-#RUN		chown -R www-data:www-data /var/lib/
+RUN		chown -R www-data:www-data /var/www/html
 #RUN 	echo "\n daemon off;">> /etc/nginx/nginx.conf
 #RUN		["chown",  "-R",  "www-data:www-data",  "*"]
 
