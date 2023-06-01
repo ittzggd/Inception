@@ -18,6 +18,7 @@ COPY	/requirements/mariadb/conf/mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.
 RUN touch /setdb.sql && \
     echo "CREATE DATABASE $DB_NAME;" > /setdb.sql && \
     echo "CREATE USER '$USER_NAME'@'%' IDENTIFIED BY '$USER_PW';" >> /setdb.sql && \
+    # echo "CREATE USER 'root'@'localhost' IDENTIFIED BY '$USER_PW';" >> /setdb.sql && \
     echo "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$USER_NAME'@'%';" >> /setdb.sql && \
     echo "FLUSH PRIVILEGES;" >> /setdb.sql
 

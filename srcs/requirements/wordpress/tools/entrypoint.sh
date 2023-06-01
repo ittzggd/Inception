@@ -24,9 +24,10 @@ port=3306
 # #service php7.3-fpm start
 # php-fpm7.3 -F
 
-wp --allow-root core download --locale=ko_KR --path=/var/www/html --force
+# wp core is-installed
+wp --allow-root core download  --path=/var/www/html
 
-wp --allow-root config create --dbname=$DB_NAME --dbuser=$DB_USER_NAME --dbpass=$DB_USER_PW --dbhost=$host:$port --locale=ko_KR --path=/var/www/html --force
+wp --allow-root config create --dbname=$DB_NAME --dbuser=$DB_USER_NAME --dbpass=$DB_USER_PW --dbhost=$host:$port  --path=/var/www/html
 
 wp --allow-root core install --url=$DOMAIN_NAME --title=$WP_TITLE --admin_user=$WP_AUSER --admin_password=$WP_APW  --admin_email=$WP_AEMAIL --skip-email
 

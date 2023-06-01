@@ -33,7 +33,7 @@ RUN		chown -R www-data:www-data /var/www/html
 EXPOSE	443
 
 #COPY	 ./conf/nginx.conf	/etc/nginx/sites-available/default
-COPY	 /requirements/nginx/conf/nginx.conf	/etc/nginx/nginx.conf
+COPY	 /requirements/nginx/conf/nginx.conf	/etc/nginx/conf.d/nginx.conf
 #COPY	/requirements/nginx/conf/test.conf	/etc/nginx/conf.d/default.conf
 COPY	/requirements/nginx/tools/entrypoint.sh	/tmp/nginx/entrypoint.sh
 
