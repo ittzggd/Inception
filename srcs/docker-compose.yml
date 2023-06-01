@@ -92,14 +92,14 @@ volumes:
     driver: local
     driver_opts: 
       o: bind
-      type: none
-      device: /Users/katherinejang/P/42/cursus/inception_ref/srcs/requriements/wordpress
+      type: volume
+      device: ${HOME}/P/42/wordpress
   db_volume:
     driver: local
     driver_opts:
       o: bind
-      type: none
-      device: /Users/katherinejang/P/42/cursus/inception_ref/srcs/requriements/mariadb
+      type: volume
+      device:  ${HOME}/P/42/database
 
 networks:
   network_hejang:
