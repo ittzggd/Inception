@@ -34,3 +34,31 @@ services:
 networks:
     intra:
         driver: bridge
+
+
+service:
+    mariadb:
+        build:
+            context: .
+            dockercile: requirement/mariadb/Dockerfile
+            args:
+        image: mariadb
+        container_name: mariadb
+        ports:
+            - "3306:3306"
+        networks:
+            - networks_hejang
+    
+    wordpress:
+        depends_on:
+            - mariadb
+        build:
+            context: .
+            dockerfile: requirements/wordpress/Dockerfile
+        env_file:
+            - .env
+        image: wordpress
+        container_name: wordpress
+        networks:
+            - networks_hejang
+        restart: always

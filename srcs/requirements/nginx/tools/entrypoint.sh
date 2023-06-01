@@ -1,8 +1,13 @@
 #!/bin/bash
 
-service nginx start;
+#echo "127.0.0.1   hejang.42.fr" >> /etc/hosts
 
-nginx -g daemon off;
+exec nginx -g "daemon off;"
+
+
+#service nginx start;
+
+#nginx -g -d;
 
 # sleep infinity;
 

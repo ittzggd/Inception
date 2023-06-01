@@ -1,0 +1,106 @@
+version : "3"
+
+
+#컨테이너 설정
+services:
+  #항목명 = 서비스명 = 네트워크 호스트 명
+  mariadb:
+    # 컨테이너에서 사용하는 base image 지정 우리는 debian buster
+   # image: debian:buster
+    #D 해당 서비스의 이미지를 빌드하기 위한 Dockerfile이 위치하는 경로를 지정하기 위해 
+    build:
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        - db_name=${DB_NAME}
+        - user_name=${DB_USER_NAME}
+        - user_pw=${DB_USER_PW}
+    # docker-complse.yml 파일로 docker container 만드는 경우 해당 컨테이너 이름 설정 가능
+    container_name: mariadb
+    # volumes:
+    #   - db_volume:/var/lib/mysql
+    # 컨테이너 다운시에 재 시작하게 만들어주는 명ㄹ여어
+   # restart: always
+    #연결할 외부 디렉토리: 컨테이너 내 디렉토리
+    # 마운트가 필요한 호스트의 경로와 컨테이너의 경로를 명시해주면 됨
+    # volums:
+    #  - db_volume:/var/lib/mysql
+    #컨테이너 내부의 환경변수 설정
+    # docker compose file과 동일 경로에 .env 파일을 둔 경우 별 다른 설정없이도 compose 파일에 바로 반영됨
+    # 아니면 env_file 항목을 통해서 env파일을 통째로 들고오는 것도 가능!
+    env_file: .env
+    networks:
+      - network_hejang
+    #내부에서 개방할 포트 : 외부에서 접근할 포트 -> -p 옵션이랑 동일
+    expose:
+      - 3306
+    
+  wordpress:
+    #image: debian:buster
+    container_name: wordpress
+    depends_on: 
+      - mariadb 
+    build:
+      dockerfile: requirements/wordpress/Dockerfile
+      args:
+        - DB_NAME=${DB_NAME}
+        - USER_NAME=${DB_USER_NAME}
+        - USER_PW=${DB_USER_PW} 
+        - HOST=${DB_HOST}
+    #restart: always
+    # volums:
+    #   - wp_volume:/var/www/html
+    #컨테이너가 실행되는 순서 제어 가능 -> depends_on으로 지정해둕 컨테이너가 실행되고 그 뒤에 해당 컨테이너가 실행되어 \
+    # wordpress 컨테이너가 db 컨테이너로 접속을 시도하도록 컨테이너 실행 순서를 제어함  -> 근데 실행 순서만 제어 
+    working_dir: /var/www/html
+    networks:
+      - network_hejang
+    #command => Dockerfile의 CMD를 무시하고 실행
+    env_file: .env
+    expose: 
+      - 9000
+
+  nginx:
+    #image: debian:buster
+    depends_on:
+      - wordpress
+    build:
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    networks:
+      - network_hejang
+   # restart: always
+    # environment: 
+    #   -
+    # volumes:
+    #   - ./
+    ports: 
+      - "443:443"
+    env_file: .env
+
+# volums:
+#   db_volume:
+#     driver: local
+#     driver_opts:
+#       o: bind
+#       type: none
+#       device: /Users/Katherinejang/P/42/cursus/inceptions/srcs/mariadb
+
+volumes:
+  wp_volume:
+    driver: local
+    driver_opts: 
+      o: bind
+      type: none
+      device: $HOME/data/wordpress
+
+  db_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $HOME/data/database
+
+networks:
+  network_hejang:
+    name: network_hejang
+    driver: bridge
