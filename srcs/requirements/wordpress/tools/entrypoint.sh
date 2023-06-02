@@ -25,12 +25,16 @@ port=3306
 # php-fpm7.3 -F
 
 # wp core is-installed
+#if ! wp core is-installed; then
+
 wp --allow-root core download  --path=/var/www/html
 
-wp --allow-root config create --dbname=$DB_NAME --dbuser=$DB_USER_NAME --dbpass=$DB_USER_PW --dbhost=$host:$port  --path=/var/www/html
+wp --allow-root config create --dbname=$DB_NAME --dbuser=$DB_USER_NAME --dbpass=$DB_USER_PW --dbhost=$host:$port  --path=/var/www/html 
 
-wp --allow-root core install --url=$DOMAIN_NAME --title=$WP_TITLE --admin_user=$WP_AUSER --admin_password=$WP_APW  --admin_email=$WP_AEMAIL --skip-email
+wp --allow-root core install --url=$DOMAIN_NAME --title=$WP_TITLE --admin_user=$WP_AUSER --admin_password=$WP_APW  --admin_email=$WP_AEMAIL --skip-email 
 
-wp --allow-root user create $WP_USER $WP_EMAIL --user_pass=$WP_PW  || echo "hi"
+wp --allow-root user create $WP_USER $WP_EMAIL --user_pass=$WP_PW 
+
+#fi
 
 exec php-fpm7.3 -F
